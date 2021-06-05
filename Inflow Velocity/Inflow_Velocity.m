@@ -78,50 +78,15 @@ switch Wake_Model
         Vi(I) = Vi;
         
         
-%     case 'Jensen'
-%         %Define mesh/grid parameters
-%         [x_grid,y_grid,z_grid] = grid_gen(population,ModelSetup);
-%         
-%         %initialise velocity variables
-%         Vw = zeros(n.x,n.x);   %wake velocity influence matrix
-%         ux_induced = zeros(n.x,1); %induced velocity container
-%         Uo = environment.freestream_velocity;
-%         
-%         if ModelSetup.Blockage == 0
-%             Vw = Jensen_Wake_Models(x_grid,y_grid,z_grid,population,turbine,environment,Vw,Wake_Summation_Model);
-%             Vi = diag(Vw);
-%             
-%         elseif ModelSetup.Blockage == 1
-%             
-%             %Calculate Vw matrix and inflow velocities
-%             for j = 1:4
-%                 Vw = Jensen_Wake_Models(x_grid,y_grid,z_grid,population,turbine,environment,Vw,Wake_Summation_Model);
-%                 Vi = diag(Vw);
-%                 
-%                 for i = 1:n.x
-%                     
-%                     ct = CT_value(turbine,Vi(i));
-%                     gamma_t = -Vi(i)*(1 - sqrt(1-ct));
-%                     %ux = elementary_vortex_cylinder(x_grid,y_grid,z_grid,gamma_t,turbine,environment,xh(i),yh(i));
-%                     ux = skewed_vortex_cylinder(x_grid,y_grid,z_grid,gamma_t,ct,turbine,environment,xh(i),yh(i));
-%                     ux_induced = ux_induced + ux';
-%                     
-%                 end
-%                 u = Uo + ux_induced(1);
-%                 Vw(1,1) = u;
-%                 % disp(Vi(1));
-%                 ux_induced = zeros(n.x,1);
-%             end
-%         end
         
-        case 'Jensen'
+    case 'Jensen'
         %Define mesh/grid parameters
         ModelSetup.Grid_Method.Method = 'cartesian';
         [x_grid,y_grid,z_grid] = grid_gen(population,ModelSetup);
         
         %Define mesh/grid parameters for blockage model
-         ModelSetup.Grid_Method.Method = 'front_row';
-         ModelSetup.Turbine.Cp_calibration_distance= 328;
+        ModelSetup.Grid_Method.Method = 'front_row';
+        ModelSetup.Turbine.Cp_calibration_distance= 328;
         [x_grid2,y_grid2,z_grid2] = grid_gen(population,ModelSetup,idx_front_row);
         
         %initialise velocity variables
@@ -153,61 +118,19 @@ switch Wake_Model
                 environment.freestream_velocity = Uo_init + ux_induced;
                 ux_induced = zeros(1,n.x);
             end
-             Vw = Jensen_Wake_Models(x_grid,y_grid,z_grid,population,turbine,environment,Vw,Wake_Summation_Model);
-             Vi = diag(Vw);
+            Vw = Jensen_Wake_Models(x_grid,y_grid,z_grid,population,turbine,environment,Vw,Wake_Summation_Model);
+            Vi = diag(Vw);
         end
         
-%     case 'Bastankah'
-%         
-%         %Define mesh/grid parameters for wake model
-%         ModelSetup.Grid_Method.Method = 'polar';
-%         [x_grid,y_grid,z_grid,weights] = grid_gen(population,ModelSetup);
-%         
-%         %Define mesh/grid parameters for blockage model
-%          ModelSetup.Grid_Method.Method = 'cartesian';
-%         [x_grid2,y_grid2,z_grid2] = grid_gen(population,ModelSetup);
-%         
-%         %initialise velocity variables
-%         Vw = zeros(n.x,n.x);   %wake velocity influence matrix
-%         ux_induced = zeros(n.x,1); %induced velocity container
-%         Uo = environment.freestream_velocity;
-%         
-%         if ModelSetup.Blockage == 0
-%             Vw = Bastankah_Wake_Models(x_grid,y_grid,z_grid,weights,population,turbine,environment,Vw,Wake_Summation_Model);
-%             Vi = diag(Vw);
-%             
-%          elseif ModelSetup.Blockage == 1
-%             
-%             %Calculate Vw matrix and inflow velocities
-%             for j = 1:4
-%                Vw = Bastankah_Wake_Models(x_grid,y_grid,z_grid,weights,population,turbine,environment,Vw,Wake_Summation_Model);
-%                Vi = diag(Vw);
-%                 
-%                 for i = 1:n.x
-%                     
-%                     ct = CT_value(turbine,Vi(i));
-%                     gamma_t = -Vi(i)*(1 - sqrt(1-ct));
-%                     %ux = elementary_vortex_cylinder(x_grid2,y_grid2,z_grid2,gamma_t,turbine,environment,xh(i),yh(i));
-%                     ux = skewed_vortex_cylinder(x_grid2,y_grid2,z_grid2,gamma_t,ct,turbine,environment,xh(i),yh(i));
-%                     ux_induced = ux_induced + ux;
-%                     
-%                 end
-%                 u = Uo + ux_induced(1);
-%                 Vw(1,1) = u;
-%                 % disp(Vi(1));
-%                 ux_induced = zeros(n.x,1);
-%             end
-%         end
         
-        
-        case 'Bastankah'
+    case 'Bastankah'
         
         %Define mesh/grid parameters for wake model
         ModelSetup.Grid_Method.Method = 'polar';
         [x_grid,y_grid,z_grid,weights] = grid_gen(population,ModelSetup);
         
         %Define mesh/grid parameters for blockage model
-         ModelSetup.Grid_Method.Method = 'front_row';
+        ModelSetup.Grid_Method.Method = 'front_row';
         [x_grid2,y_grid2,z_grid2] = grid_gen(population,ModelSetup,idx_front_row);
         
         %initialise velocity variables
@@ -220,12 +143,12 @@ switch Wake_Model
             Vw = Bastankah_Wake_Models(x_grid,y_grid,z_grid,weights,population,turbine,environment,Vw,Wake_Model,Wake_Summation_Model);
             Vi = diag(Vw);
             
-         elseif ModelSetup.Blockage == 1
+        elseif ModelSetup.Blockage == 1
             
             %Calculate Vw matrix and inflow velocities
             for j = 1:4
-               Vw = Bastankah_Wake_Models(x_grid,y_grid,z_grid,weights,population,turbine,environment,Vw,Wake_Model,Wake_Summation_Model);
-               Vi = diag(Vw);
+                Vw = Bastankah_Wake_Models(x_grid,y_grid,z_grid,weights,population,turbine,environment,Vw,Wake_Model,Wake_Summation_Model);
+                Vi = diag(Vw);
                 
                 for i = 1:n.x
                     
@@ -244,14 +167,14 @@ switch Wake_Model
         end
         
         
-        case 'Bastankah_TI'
+    case 'Bastankah_TI'
         
         %Define mesh/grid parameters for wake model
         ModelSetup.Grid_Method.Method = 'polar';
         [x_grid,y_grid,z_grid,weights] = grid_gen(population,ModelSetup);
         
         %Define mesh/grid parameters for blockage model
-         ModelSetup.Grid_Method.Method = 'front_row';
+        ModelSetup.Grid_Method.Method = 'front_row';
         [x_grid2,y_grid2,z_grid2] = grid_gen(population,ModelSetup,idx_front_row);
         
         %initialise velocity variables
@@ -264,12 +187,12 @@ switch Wake_Model
             Vw = Bastankah_Wake_Models(x_grid,y_grid,z_grid,weights,population,turbine,environment,Vw,Wake_Model,Wake_Summation_Model);
             Vi = diag(Vw);
             
-         elseif ModelSetup.Blockage == 1
+        elseif ModelSetup.Blockage == 1
             
             %Calculate Vw matrix and inflow velocities
             for j = 1:4
-               Vw = Bastankah_Wake_Models(x_grid,y_grid,z_grid,weights,population,turbine,environment,Vw,Wake_Model,Wake_Summation_Model);
-               Vi = diag(Vw);
+                Vw = Bastankah_Wake_Models(x_grid,y_grid,z_grid,weights,population,turbine,environment,Vw,Wake_Model,Wake_Summation_Model);
+                Vi = diag(Vw);
                 
                 for i = 1:n.x
                     
