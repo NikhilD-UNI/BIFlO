@@ -1,8 +1,7 @@
-
 function Vw = Jensen_wake_model_1d(population,turbine,environment,Vw,Wake_Summation_Model)
 % Wake Model Basic - Jensen
 %This is a basic jensen wake model that will be used to evaluate the
-%turbine inflow velocities for a 1D config.
+%turbine inflow velocities.
 %
 %input arguments
 %--------------------------------------------------------------------------
@@ -17,28 +16,41 @@ function Vw = Jensen_wake_model_1d(population,turbine,environment,Vw,Wake_Summat
 %
 %Vw          - Defines the velocity wake influence matrix that will be used
 %              to evealuate the inflow velocities at each turbine. 
+%
+%Wake_Summation_Model - Wake Summation Model
 %--------------------------------------------------------------------------
 
 %Assign Variables
 
 D = turbine.Diameter;                 
 Z_h = turbine.Hubheight;
+Cp_d = turbine.Cp_calibartion_distance;
 Z_0 = environment.surface_roughness;
+Uo  = environment.freestream_velocity;
 alpha = 0.5 / log(Z_h/Z_0);    %wake decay coefficient 
 [Vw_size ~] = size(Vw);
-Ao = eye(Vw_size);
+Ao = ones(Vw_size,Vw_size) - diag([ones(1,Vw_size)]);
 
 %store population locations
 location.x = population(:,1);
 
-%calculate the influence coefficients initialise 
-Vw(1,1) = environment.freestream_velocity;
+
+if Vw(1,1) == 0
+    Vw(1,1) = Uo;
+end
+
+if Vw(1,1) ~= Uo
+   Uo =  Vw(1,1);
+end
+
+%calculate the influence coefficients
 for i = 1:Vw_size
     if i ~= 1
-        Vw(i,i) = WakeSummation_Selection(Vw,Ao,i,freestream_velocity,Wake_Summation_Model);
+        %Wake summation model
+        Vw(i,i) = WakeSummation_Selection(Vw,Ao,i,Uo,Wake_Summation_Model);
     end
     %array of distances from current turbine to other turbines
-    distance = turbine_distance_calculator_1D(location.x(i:end));
+    distance = turbine_distance_calculator_1D(location.x(i:end))-Cp_d;
     
     a = turbine_induction_factor(Vw(i,i),turbine);
     if i == Vw_size
