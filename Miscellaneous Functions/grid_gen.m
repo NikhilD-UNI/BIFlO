@@ -4,8 +4,10 @@ function [x_grid,y_grid,z_grid,weights] = grid_gen(population,ModelSetup,idx_fro
 %
 % Inputs
 %--------------------------------------------------------------------------
-% population - this is the sorted/organised population array 
-% Modelsetup - this is the Modelsetup class
+% population    - this is the sorted/organised population array 
+% Modelsetup    - this is the Modelsetup class
+% idx_front_row - index of turbines in the populations that make up the
+%                 front row turbines.
 % 
 % Outputs
 %--------------------------------------------------------------------------

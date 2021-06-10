@@ -2,6 +2,18 @@ function [x_loc,y_loc] = Auto_Turbine_grid_seed(x_boundary,y_boundary)
 %this function seeds a population of grid points within your farm to allow
 %for turbine locations to be assigned when adding new turbines. This should
 %only be produced once.
+%
+%inputs
+%--------------------------------------------------------------------------
+% x_boundary = x coordinates of the boundary given in a 1d array
+% y_boundary = y coordinates of the boundary given in a 1d array
+%
+% Coordinates should be defined in a clockwise sense.
+%
+% output
+%--------------------------------------------------------------------------
+% x_loc = x grid point locations
+% y_loc = y grid point locations
 
 % locate constraints 
 x_max = max(x_boundary);
