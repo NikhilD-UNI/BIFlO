@@ -6,7 +6,12 @@ classdef environment
         density = 1.225      %[kg/m^3] - density at hub height
         TI_a                 %[%] - Ambient Turbulence Intensity
         
-        wind_rose = struct('Data',table(),'Direction',[],'Speeds',[]) % A data container for the wind rose data
+        wind_rose = struct('Data',table(),... % A data container for the wind rose data
+            'Direction',[],'Speeds',[],...
+            'GlobalSummary',struct('Mean_Wind_Speed',[],...
+            'Max_Wind_Speed',[],'Min_Wind_Speed',[],'Weibul_k',[],...
+            'Weibul_c',[],'Mean_Speed_Power_Producing',[],'Mean_direction',[],...
+            'Mean_TI_a',[])) 
     end
     methods
         function obj  = configure_wind_rose_table(environment)
