@@ -17,7 +17,7 @@ Uo = environment.freestream_velocity;
 %    Uo = Vw(1,1);
 % end
 
-if strcmp(Wake_Model,'Bastankah')
+if strcmp(Wake_Model,'BPAM')
 
     for i = 1:Vw_size
 
@@ -33,7 +33,7 @@ if strcmp(Wake_Model,'Bastankah')
         Vw(i,i) = a;
     end
 
-elseif strcmp(Wake_Model,'Bastankah_TI')
+elseif strcmp(Wake_Model,'BPAMTI')
 
     for i = 1:Vw_size
 
