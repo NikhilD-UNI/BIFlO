@@ -123,7 +123,7 @@ switch Wake_Model
         end
         
         
-    case 'Bastankah'
+    case 'BPAM'
         
         %Define mesh/grid parameters for wake model
         ModelSetup.Grid_Method.Method = 'polar';
@@ -167,7 +167,7 @@ switch Wake_Model
         end
         
         
-    case 'Bastankah_TI'
+    case 'BPAMTI'
         
         %Define mesh/grid parameters for wake model
         ModelSetup.Grid_Method.Method = 'polar';
